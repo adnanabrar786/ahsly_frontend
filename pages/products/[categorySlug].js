@@ -22,35 +22,34 @@ import iconthree from "../assets/iconthree.PNG";
 import iconfour from "../assets/iconfour.PNG";
 
 const Products = () => {
-  const [proByCat, setproByCat] = useState([]);
+  const [productsByCat, setProductsByCat] = useState([]);
 
+  // query params
   const router = useRouter();
+  const { categorySlug } = router.query;
+
   const dispatch = useDispatch();
 
   const products = useSelector(selectProducts);
   const category = useSelector(selectCategory);
 
-  const filteredProducts = products?.products.filter((fp) => {
-    return fp.category_id.slug === router.query.productslugnew;
+  console.log("products>>>>>>.", useSelector(selectProducts));
+
+  const filteredProducts = products?.filter((fp) => {
+    return fp.category_id.slug === categorySlug;
   });
-  console.log('routerrrrr',router.query.productslugnew);
 
   console.log("filtered Prossss", filteredProducts);
 
-  const catTitle = router.query.productslugnew?.replace(/-/g, " ");
-
-  const currentCategory = category?.categories.filter((currentCat) => {
-    return currentCat.slug === router.query.productslugnew;
+  const currentCategory = category?.filter((currentCat) => {
+    return currentCat.slug === categorySlug;
 
   });
+  console.log("Current Cat >>>", currentCategory);
 
-  console.log('current categorysss', currentCategory);
-
-  const curCat = currentCategory && currentCategory[0] ;
-
-  console.log('curCatsss', curCat);
-
-  const parentCategory = category?.categories.filter((parentCat) => {
+  const curCat = currentCategory && currentCategory[0];
+  console.log("curCat", curCat);
+  const parentCategory = category?.filter((parentCat) => {
     return parentCat._id === curCat.parent_id;
   });
 
@@ -58,19 +57,16 @@ const Products = () => {
 
   console.log("parentCat", parentCat);
 
-  const siblingCategory = category?.categories.filter((siblingsCats) => {
+  const siblingCategory = category?.filter((siblingsCats) => {
     return siblingsCats.parent_id === parentCat._id;
   });
 
   const catClickHandler = (slug) => {
-    // console.log(slug);
-
-    const pros = products?.products.filter((fp) => {
+    const pros = products?.filter((fp) => {
       return fp.category_id.slug === slug;
     });
 
-    setproByCat(pros);
-    // console.log(proByCat);
+    setProductsByCat(pros);
   };
 
   useEffect(() => {
@@ -78,14 +74,14 @@ const Products = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const url = process.env.NEXT_PUBLIC_BASE_URL;
+  // const url = process.env.NEXT_PUBLIC_BASE_URL;
 
   return (
     <div className={product.products_wrapper}>
       <div className={product.filter_products_wrapper}>
         <div className={product.filters_wrapper}>
           <div className={product.filter_heading}>
-            <h3>{catTitle}</h3>
+            <h3>{router.query.productsByCategory?.replace(/-/g, " ")}</h3>
             {/* <p>N of Ns Products Showing</p> */}
           </div>
           <div className={product.filters_cat}>
@@ -248,9 +244,9 @@ const Products = () => {
             {!filteredProducts ? (
               <h5 style={{ margin: "80px auto" }}>No Products Found</h5>
             ) : (
-              (proByCat.length >= 1 ? proByCat : filteredProducts)?.map(
+              (productsByCat.length >= 1 ? productsByCat : filteredProducts)?.map(
                 (product) => (
-                  <ProductCard key={product._id} products={product} />
+                  <ProductCard key={product._id} cardProduct={product} />
                 )
               )
             )}

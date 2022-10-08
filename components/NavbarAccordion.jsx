@@ -284,7 +284,7 @@ const NavbarAccordion = ({
   // new work
   const categories = useSelector(selectCategory);
 
-  const mainCategories = categories?.categories.filter((cat) => {
+  const mainCategories = categories?.filter((cat) => {
     return cat.parent_id === "";
   });
   // new work
@@ -333,10 +333,9 @@ const NavbarAccordion = ({
                 : styles.accordion_content + " " + styles.show
             }
           >
-            {categories?.categories
-              .filter(
-                (filteredCats) => filteredCats.parent_id === mainCategory._id
-              )
+            {categories?.filter(
+              (filteredCats) => filteredCats.parent_id === mainCategory._id
+            )
               .map((subCats) => (
                 <div
                   className={styles.content_filter_wrapper}

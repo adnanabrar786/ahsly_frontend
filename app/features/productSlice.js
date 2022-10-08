@@ -44,7 +44,7 @@ export const fetchProducts = createAsyncThunk("products/fetch", async () => {
   // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}products`);
   const res = await fetch("https://ashley-api.herokuapp.com/products");
   const data = await res.json();
-  return data;
+  return data.products;
 });
 
 // export function fetchProducts() {

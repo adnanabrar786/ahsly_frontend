@@ -74,15 +74,21 @@ export default function Home({ categoriesData }) {
     settings.slidesToShow = 2;
   }
   // new_work_width
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+  useEffect(() => {
+    dispatch(fetchCategory());
+  }, []);
 
   const categories = useSelector(selectCategory);
   const products = useSelector(selectProducts);
 
-  const filteredProducts = products?.products.filter((fp) => {
+  const filteredProducts = products?.filter((fp) => {
     return fp.category_id.slug === "sheet-sets";
   });
 
-  const mainCategories = categories?.categories.filter((cat) => {
+  const mainCategories = categories?.filter((cat) => {
     return cat.parent_id === "";
   });
 
@@ -97,12 +103,7 @@ export default function Home({ categoriesData }) {
   const categoryBanner = banner.filter((banner) => {
     return banner.type === 'category'
   })
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
-  useEffect(() => {
-    dispatch(fetchCategory());
-  }, []);
+
 
   useEffect(() => {
     const fetchLoginData = localStorage.getItem("user");

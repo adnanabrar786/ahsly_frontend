@@ -11,21 +11,18 @@ const NavbarLinks = () => {
   const categories = useSelector(selectCategory);
   const [discountCategories, setDiscountCategories] = useState([]);
 
+  const getDiscountedCategories = async () => {
+    const { data } = await axios.get(
+      "https://ashley-api.herokuapp.com/products/discount/categories"
+    );
+    setDiscountCategories(data.categories);
+  }
+
   useEffect(() => {
-    async function getDisCats() {
-      try {
-        const response = await axios.get(
-          "https://ashley-api.herokuapp.com/products/discount/categories"
-        );
-        setDiscountCategories(response.data.categories);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getDisCats();
+    getDiscountedCategories();
   }, []);
 
-  const mainCategories = categories?.categories.filter((cat) => {
+  const mainCategories = categories?.filter((cat) => {
     return cat.parent_id === "";
   });
 
@@ -35,12 +32,11 @@ const NavbarLinks = () => {
         <div className={navbar.links_wrapper} key={mainCategory._id}>
           <p className={navbar.links}>{mainCategory.title}</p>
           <div className={navbar.dropdown}>
-            {categories?.categories
-              .filter(
-                (filteredCats) => filteredCats.parent_id === mainCategory._id
-              )
+            {categories?.filter(
+              (filteredCats) => filteredCats.parent_id === mainCategory._id
+            )
               .map((subCats) => (
-                <Link href={`/productsNew/${subCats.slug}`} key={subCats._id}>
+                <Link href={`/products/${subCats.slug}`} key={subCats._id}>
                   <p className={navbar.dropdown_link}>{subCats.title}</p>
                 </Link>
               ))}

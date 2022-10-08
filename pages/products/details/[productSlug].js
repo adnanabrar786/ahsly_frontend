@@ -450,11 +450,10 @@ const ProductDetail = ({ productDetail }) => {
                   }
                   <span
                     style={{
-                      backgroundImage: `url(${imgURL}colors/${
-                        colors
+                      backgroundImage: `url(${imgURL}colors/${colors
                           .slice(sizeID, sizeID + 1)
                           .map((color) => color[colorID])[0].image
-                      })`,
+                        })`,
                       height: 24,
                       width: 24,
                       fontWeight: 600,
@@ -511,15 +510,15 @@ const ProductDetail = ({ productDetail }) => {
                     }}
                     key={i}
                     onClick={() => sizeChangeHandler(i)}
-                    // style={{
-                    //   height: 36,
-                    //   width: 36,
-                    //   display: "flex",
-                    //   alignItems: "center",
-                    //   borderRadius: "50%",
-                    //   boxShadow: "0 0 5px grey",
-                    //   justifyContent: "center",
-                    // }}
+                  // style={{
+                  //   height: 36,
+                  //   width: 36,
+                  //   display: "flex",
+                  //   alignItems: "center",
+                  //   borderRadius: "50%",
+                  //   boxShadow: "0 0 5px grey",
+                  //   justifyContent: "center",
+                  // }}
                   >
                     {size}
                   </Typography>
@@ -1349,15 +1348,14 @@ const ProductDetail = ({ productDetail }) => {
 // }
 
 export async function getServerSideProps(context) {
-  const { productdetailslugNew } = context.query;
+  const { productSlug } = context.query;
 
   const res = await fetch(
-    `https://ashley-api.herokuapp.com/products/${productdetailslugNew}`
+    `https://ashley-api.herokuapp.com/products/${productSlug}`
   );
 
   const data = await res.json();
   const productDetail = data.product;
-  console.log("p detail", productDetail);
 
   return {
     props: { productDetail }, // will be passed to the page component as props

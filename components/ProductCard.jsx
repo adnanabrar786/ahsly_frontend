@@ -7,22 +7,22 @@ import { AiOutlineHeart, AiFillStar } from "react-icons/ai";
 
 import product from "../styles/ProductCard.module.scss";
 
-const ProductCard = ({ products }) => {
-  const price = products.variants.map((variant) => {
+const ProductCard = ({ cardProduct }) => {
+  const price = cardProduct.variants.map((variant) => {
     return variant.sale_price;
   });
   // const desc = products.variants.map((variant) => {
   //   return variant.description.slice(0,10);
   // });
 
-  const images = products.variants.slice(1, 2).map((variant) => {
+  const images = cardProduct.variants.slice(1, 2).map((variant) => {
     return variant.features.slice(0, 1).map((feature) => {
       return feature.images.slice(0, 1).map((images) => {
         return images;
       });
     });
   });
-  const imagesHover = products.variants.slice(0, 1).map((variant) => {
+  const imagesHover = cardProduct.variants.slice(0, 1).map((variant) => {
     return variant.features.slice(0, 1).map((feature) => {
       return feature.images.slice(0, 1).map((images) => {
         return images;
@@ -44,11 +44,11 @@ const ProductCard = ({ products }) => {
     edit: false,
     color1: "rgb(20,20,20,0.1)",
     color2: "tomato",
-    value: products.rating,
+    value: cardProduct.rating,
   };
 
   return (
-    <Link href={`/productsNew/productdetailnew/${products.slug}`}>
+    <Link href={`/products/details/${cardProduct.slug}`}>
       <a className={product.products_card}>
         <div className={product.heart}>
           <h4 className={product.icon}>
@@ -73,7 +73,7 @@ const ProductCard = ({ products }) => {
           </div>
         </div>
         <div className={product.card_info}>
-          <h4>{products.title}</h4>
+          <h4>{cardProduct.title}</h4>
           <div className={product.ratings}>
             <ReactStars {...options} />
 
