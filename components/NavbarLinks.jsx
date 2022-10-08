@@ -12,9 +12,7 @@ const NavbarLinks = () => {
   const [discountCategories, setDiscountCategories] = useState([]);
 
   const getDiscountedCategories = async () => {
-    const { data } = await axios.get(
-      "https://ashley-api.herokuapp.com/products/discount/categories"
-    );
+    const { data } = await axios.get("https://ashley-api.herokuapp.com/products/discount/categories");
     setDiscountCategories(data.categories);
   }
 
@@ -43,18 +41,20 @@ const NavbarLinks = () => {
           </div>
         </div>
       ))}
-      <div className={navbar.links_wrapper}>
-        <p className={navbar.links} style={{ color: "red", fontWeight: "600" }}>
-          Discount
-        </p>
-        <div className={navbar.dropdown}>
-          {discountCategories?.map((item) => (
-            <Link href={`/discountedproducts/${item.slug}`} className={navbar.dropdown_link} key={item._id}>
-              <p className={navbar.dropdown_link}> {item.title} </p>
-            </Link>
-          ))}
-        </div>
-      </div>
+
+      {mainCategories &&
+        <div className={navbar.links_wrapper}>
+          <p className={navbar.links} style={{ color: "red", fontWeight: "600" }}>
+            Discount
+          </p>
+          <div className={navbar.dropdown}>
+            {discountCategories?.map((item) => (
+              <Link href={`/discountedproducts/${item.slug}`} className={navbar.dropdown_link} key={item._id}>
+                <p className={navbar.dropdown_link}> {item.title} </p>
+              </Link>
+            ))}
+          </div>
+        </div>}
     </div>
   );
 };

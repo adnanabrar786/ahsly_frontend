@@ -104,7 +104,6 @@ export default function Home({ categoriesData }) {
     return banner.type === 'category'
   })
 
-
   useEffect(() => {
     const fetchLoginData = localStorage.getItem("user");
     if (fetchLoginData) {

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCategory,
-  selectCategory,
-} from "../../app/features/categorySlice";
-
+import { fetchCategory, selectCategory } from "../../app/features/categorySlice";
 import { fetchProducts, selectProducts } from "../../app/features/productSlice";
 
 import FilterAccordion from "../../components/FilterAccordion";
@@ -31,35 +26,14 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const products = useSelector(selectProducts);
-  const category = useSelector(selectCategory);
-
-  console.log("products>>>>>>.", useSelector(selectProducts));
+  const categories = useSelector(selectCategory);
 
   const filteredProducts = products?.filter((fp) => {
     return fp.category_id.slug === categorySlug;
   });
 
-  console.log("filtered Prossss", filteredProducts);
-
-  const currentCategory = category?.filter((currentCat) => {
-    return currentCat.slug === categorySlug;
-
-  });
-  console.log("Current Cat >>>", currentCategory);
-
-  const curCat = currentCategory && currentCategory[0];
-  console.log("curCat", curCat);
-  const parentCategory = category?.filter((parentCat) => {
-    return parentCat._id === curCat.parent_id;
-  });
-
-  const parentCat = parentCategory ? parentCategory[0] : "";
-
-  console.log("parentCat", parentCat);
-
-  const siblingCategory = category?.filter((siblingsCats) => {
-    return siblingsCats.parent_id === parentCat._id;
-  });
+  const currentCategory = categories?.find((cat) => cat.slug === categorySlug);
+  const parentCategory = categories?.find((cat) => cat._id == currentCategory?.parent_id);
 
   const catClickHandler = (slug) => {
     const pros = products?.filter((fp) => {
@@ -69,24 +43,26 @@ const Products = () => {
     setProductsByCat(pros);
   };
 
-  useEffect(() => {
-    dispatch(fetchCategory());
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const siblingCategories = categories?.filter((cat) => cat.parent_id === parentCategory._id);
+  const topCategoriesExceptOne = siblingCategories?.filter((cat) => cat.slug !== categorySlug);
 
-  // const url = process.env.NEXT_PUBLIC_BASE_URL;
+
+  // useEffect(() => {
+  //   // dispatch(fetchCategory());
+  //   // dispatch(fetchProducts());
+  // }, [dispatch]);
 
   return (
     <div className={product.products_wrapper}>
       <div className={product.filter_products_wrapper}>
         <div className={product.filters_wrapper}>
           <div className={product.filter_heading}>
-            <h3>{router.query.productsByCategory?.replace(/-/g, " ")}</h3>
+            <h3>{categorySlug?.replace(/-/g, " ")}</h3>
             {/* <p>N of Ns Products Showing</p> */}
           </div>
           <div className={product.filters_cat}>
-            <h3>{parentCat.title}</h3>
-            {siblingCategory?.map((siblingCats) => (
+            <h3>{parentCategory?.title}</h3>
+            {siblingCategories?.map((siblingCats) => (
               <p
                 key={siblingCats._id}
                 onClick={() => catClickHandler(siblingCats.slug)}
@@ -103,15 +79,11 @@ const Products = () => {
         <div className={product.products_item_wrapper}>
           {/* new work start top sub categories */}
           <div className={product.images_fiter}>
-            {siblingCategory?.slice(0, 5).map((siblingCats) => (
-              <div
-                className={product.images_fiter_wrapper}
-                key={siblingCats._id}
-              >
-                <div
-                  className={product.sub_categories_image_div}
-                  onClick={() => catClickHandler(siblingCats.slug)}
-                >
+            {topCategoriesExceptOne?.slice(0, 5).map((siblingCats) => (
+              <div className={product.images_fiter_wrapper}
+                key={siblingCats._id}>
+                <div className={product.sub_categories_image_div}
+                  onClick={() => catClickHandler(siblingCats.slug)}>
                   <div className={product.sub_categories_image}>
                     <Image
                       className={product.image}
@@ -127,8 +99,7 @@ const Products = () => {
                 <p
                   // key={siblingCats._id}
                   className={product.sub_categories_name}
-                  onClick={() => catClickHandler(siblingCats.slug)}
-                >
+                  onClick={() => catClickHandler(siblingCats.slug)}>
                   {siblingCats.title}
                 </p>
               </div>
@@ -215,19 +186,6 @@ const Products = () => {
             </div>
           </div> */}
           <div>
-            {/* {siblingCategory?.slice(2, 6).map((siblingCats) => (
-              <h6
-                key={siblingCats._id}
-                onClick={() => catClickHandler(siblingCats.slug)}
-              >
-                {siblingCats.title}
-              </h6>
-            ))} */}
-
-            {/* const fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
-                const citrus = fruits.slice(1, 3);
-  origin.slice(start, end).map
-                document.getElementById("demo").innerHTML = citrus; */}
           </div>
 
           {/* sub categories new work */}
@@ -244,7 +202,7 @@ const Products = () => {
             {!filteredProducts ? (
               <h5 style={{ margin: "80px auto" }}>No Products Found</h5>
             ) : (
-              (productsByCat.length >= 1 ? productsByCat : filteredProducts)?.map(
+              (productsByCat.length > 0 ? productsByCat : filteredProducts)?.map(
                 (product) => (
                   <ProductCard key={product._id} cardProduct={product} />
                 )
