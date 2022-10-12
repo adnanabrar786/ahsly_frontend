@@ -54,7 +54,7 @@ const Products = () => {
             <h3>{parentCategory?.title}</h3>
             {siblingCategories?.map((siblingCat) => (
               <Link href={`/products/${siblingCat.slug}`} key={siblingCat._id}>
-                <p >{siblingCat.title}</p>
+                <p>{siblingCat.title}</p>
               </Link>
             ))}
           </div>
@@ -85,7 +85,7 @@ const Products = () => {
                         />
                       </div>
                     </div>
-                    <p  className={product.sub_categories_name_ExpectOne}>{siblingCategory.title}</p>
+                    <p className={product.sub_categories_name_ExpectOne}>{siblingCategory.title}</p>
                   </div>
                 </Link>
               </div>

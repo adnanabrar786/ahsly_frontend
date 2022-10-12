@@ -26,13 +26,13 @@
         padding: 20px 0;
 
         h3 {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: bold;
           text-transform: capitalize;
           margin: 10px 0;
         }
         p {
-          font-size: 16px;
+          font-size: 14px;
           margin: 0;
         }
       }
@@ -40,7 +40,7 @@
         width: 100%;
         margin: 10px 0;
         h3 {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           margin: 10px 0;
         }
@@ -48,7 +48,7 @@
           padding: 10px;
           cursor: pointer;
           width: 100%;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 500;
           margin: 0;
           &:hover {
@@ -148,6 +148,7 @@
           }
 
           .sub_categories_name_ExpectOne {
+            font-size: 14px;
             margin-top: 15px;
             text-align: center;
           }
