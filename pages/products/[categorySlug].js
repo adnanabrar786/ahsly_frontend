@@ -85,8 +85,7 @@ const Products = () => {
                         />
                       </div>
                     </div>
-
-                    <p>{siblingCategory.title}</p>
+                    <p  className={product.sub_categories_name_ExpectOne}>{siblingCategory.title}</p>
                   </div>
                 </Link>
               </div>
